@@ -6,8 +6,8 @@ namespace ZenPencilTest
 {
     class Item
     {
-        public decimal OriginalPrice { get; set; }
-        public decimal CurrentPrice { get; set; }
+        private decimal OriginalPrice { get; set; }
+        private decimal CurrentPrice { get; set; }
 
         public Item(decimal originalPrice)
         {
@@ -21,15 +21,10 @@ namespace ZenPencilTest
         
         public bool IsRedPencil()
         {
-            var upper_bound = (CurrentPrice + (0.30m * OriginalPrice));
-            var lower_bound = (CurrentPrice + (0.05m * OriginalPrice));
+            var upper_bound = CurrentPrice + 0.30m * OriginalPrice;
+            var lower_bound = CurrentPrice + 0.05m * OriginalPrice;
             
-            if (OriginalPrice > upper_bound || OriginalPrice < lower_bound)
-            {
-                return false;
-            }
-
-            return true;
+            return OriginalPrice <= upper_bound && OriginalPrice >= lower_bound;
         }
     }
 
@@ -38,8 +33,8 @@ namespace ZenPencilTest
     {
         private const decimal OriginalLaptopPrice = 1200m;
 
-        
-        Item laptop = new Item(originalPrice: OriginalLaptopPrice);
+
+        readonly Item laptop = new Item(originalPrice: OriginalLaptopPrice);
 
         [Fact]
         public void IsRedPencil_NotRedPencil_When_NotOnSale()
